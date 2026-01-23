@@ -20,15 +20,16 @@ if not st.session_state.logged_in:
             st.rerun()  # This refreshes the app to show dashboard
         else:
             st.error("Invalid username or password")
-st.sidebar.subheader('🚪 Logout')
-if st.sidebar.button('Logout'):
-    st.session_state.clear()
-    st.rerun()
+   
 
 
 def all_analysis():
 
     final_dataset_products = pd.read_csv("finalized_data_csvv.csv")
+    st.sidebar.subheader('🚪 Logout')
+    if st.sidebar.button('Logout'):
+        st.session_state.clear()
+        st.rerun()
     
     #final_dataset_products = pd.read_csv(r'C:\Users\Harshita Sahu\OneDrive\Documents\Web_scrapping_data\finalized_data_csvv.csv')
     final_dataset_products = final_dataset_products.drop(columns = ['Unnamed: 0'])
