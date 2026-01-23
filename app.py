@@ -20,15 +20,43 @@ if not st.session_state.logged_in:
             st.rerun()  # This refreshes the app to show dashboard
         else:
             st.error("Invalid username or password")
+st.sidebar.subheader('🚪 Logout')
+if st.sidebar.button('Logout'):
+    st.session_state.clear()
+    st.rerun()
 
 
 def all_analysis():
+
     final_dataset_products = pd.read_csv("finalized_data_csvv.csv")
+    
+    #final_dataset_products = pd.read_csv(r'C:\Users\Harshita Sahu\OneDrive\Documents\Web_scrapping_data\finalized_data_csvv.csv')
     final_dataset_products = final_dataset_products.drop(columns = ['Unnamed: 0'])
     st.title("Product Data Analysis")
     
+    Titles = final_dataset_products['Titles'].unique()
+    Series = final_dataset_products['Series'].unique()
+    Processor_brands = final_dataset_products['Processor Brand'].unique()
+    Processor_types = final_dataset_products['Processor Type'].unique()
+    Price_cat = final_dataset_products['Prices_Category'].unique()
 
-    #st.write(final_dataset_products.columns.tolist())
+
+    #selected_laptop = st.sidebar.selectbox('select a laptop',Titles)
+    selected_laptop = st.sidebar.multiselect('select multiple laptops',Titles,key = 'Laptop')
+    selected_series = st.sidebar.multiselect('select multiple series',Series,key = 'Series')
+    selected_Processor_Brand = st.sidebar.multiselect('select multiple processor brands',Processor_brands,key = 'Processor_Brand')
+    selected_Price_category = st.sidebar.multiselect('select multiple price categories',Price_cat,key = 'Prices_Category')
+
+    filtered = final_dataset_products.copy()
+    if selected_laptop:
+        filtered = filtered[filtered['Titles'].isin(selected_laptop)]
+    if selected_series:
+        filtered = filtered[filtered['Series'].isin(selected_series)]
+    if selected_Processor_Brand:
+        filtered = filtered[filtered['Processor Brand'].isin(selected_Processor_Brand)]
+    if selected_Price_category:
+        filtered = filtered[filtered['Prices_Category'].isin(selected_Price_category)]
+
 
     tab1,tab2,tab3,tab4,tab5 = st.tabs(['📊 Data overvies & analysis','⚖️ Comparative Analysis','👥⭐ Rating Analysis','🔗 URL Analysis','📌Wrap Up'])
 
@@ -36,35 +64,7 @@ def all_analysis():
         st.subheader('📊Final Dataset Preview')
         st.dataframe(final_dataset_products.head())
 
-        st.sidebar.subheader('🚪 Logout')
-        if st.sidebar.button('Logout'):
-            st.session_state.clear()
-            st.rerun()
-
-
-        Titles = final_dataset_products['Titles'].unique()
-        Series = final_dataset_products['Series'].unique()
-        Processor_brands = final_dataset_products['Processor Brand'].unique()
-        Processor_types = final_dataset_products['Processor Type'].unique()
-        Price_cat = final_dataset_products['Prices_Category'].unique()
-
-
-        #selected_laptop = st.sidebar.selectbox('select a laptop',Titles)
-        selected_laptop = st.sidebar.multiselect('select multiple laptops',Titles,key = 'Laptop')
-        selected_series = st.sidebar.multiselect('select multiple series',Series,key = 'Series')
-        selected_Processor_Brand = st.sidebar.multiselect('select multiple processor brands',Processor_brands,key = 'Processor_Brand')
-        selected_Price_category = st.sidebar.multiselect('select multiple price categories',Price_cat,key = 'Prices_Category')
-
-        filtered = final_dataset_products.copy()
-        if selected_laptop:
-            filtered = filtered[filtered['Titles'].isin(selected_laptop)]
-        if selected_series:
-            filtered = filtered[filtered['Series'].isin(selected_series)]
-        if selected_Processor_Brand:
-            filtered = filtered[filtered['Processor Brand'].isin(selected_Processor_Brand)]
-        if selected_Price_category:
-            filtered = filtered[filtered['Prices_Category'].isin(selected_Price_category)]
-
+        
 
         if filtered['Titles'].notna().any():
              Most_sold_Laptop = filtered.groupby('Titles')['Qty_sold_last_month_'].sum().sort_values(ascending = False).head(1).reset_index()['Titles'][0]
@@ -223,7 +223,7 @@ def all_analysis():
 
         #selected_laptop = st.sidebar.selectbox('select a laptop',Titles)
 
-        selected_laptops_for_comparative_analysis = st.sidebar.multiselect('select_laptops_for_comparative_analysis',Titles,key = 'compare laptops')
+        selected_laptops_for_comparative_analysis = st.multiselect('select_laptops_for_comparative_analysis',Titles,key = 'compare laptops')
         if len(selected_laptops_for_comparative_analysis) == 0 or len(selected_laptops_for_comparative_analysis) ==1:
             st.warning('Please select at least 2 laptops to make comparative analysis')
         
@@ -361,10 +361,21 @@ def all_analysis():
 
         st.markdown("""<div style = "font-weight:bold; font-size :21px ; text-align:center;"
                     >⭐📈 Relationship Between Ratings, Rating Counts & Qty Sold (by Processor Type)</div>""",unsafe_allow_html = True)
+        
+        
+        multiselect_laptops = st.multiselect('select_laptops_to_compare',Titles)
+        
+        k = final_dataset_products[final_dataset_products['Titles'].isin(multiselect_laptops)]
+        if len(k)>0:
+            k = k
+        else :
+            k = final_dataset_products
+        st.write(k.head(5))
      
-        st.write(final_dataset_products.head(5))
+
+        #key = 'compare laptops')
     
-        ratings_processor_type_dist = final_dataset_products.groupby('Processor Type').agg(avg_rating = ('Ratings','mean'),rating_counts = ('Ratings_counts','sum'),qty_sold_most = ('Qty_sold_last_month_','sum')).sort_values(by = ['rating_counts','avg_rating','qty_sold_most'],ascending = False).reset_index()
+        ratings_processor_type_dist =k.groupby('Processor Type').agg(avg_rating = ('Ratings','mean'),rating_counts = ('Ratings_counts','sum'),qty_sold_most = ('Qty_sold_last_month_','sum')).sort_values(by = ['rating_counts','avg_rating','qty_sold_most'],ascending = False).reset_index()
         def processor_brand_analysis(ratings_processor_type_dist):
             x = np.arange(len(ratings_processor_type_dist))
             width = 0.35
@@ -390,7 +401,7 @@ def all_analysis():
             axes[1].plot(x,ratings_processor_type_dist['avg_rating'],color = 'r' , marker = 'o',linewidth = 3,zorder = 5,label = 'Avg_Ratings')
             for i,value in enumerate(ratings_processor_type_dist['avg_rating']):
                 if value>0:
-                    axes[1].text(i,value+0.05,round(value,1),ha = 'center',va = 'bottom')
+                    axes[1].text(i,value+0.0005,round(value,1),ha = 'center',va = 'bottom')
             axes[1].set_xticks(x)
             axes[1].set_xticklabels(ratings_processor_type_dist['Processor Type'],rotation = 90)
             axes[1].set_title('Average_Ratings')
@@ -413,7 +424,7 @@ def all_analysis():
 
         st.markdown("""<div style = "font-weight:bold; font-size :21px ; text-align:center;"
                     >💻⚙️📈  Relationship Between Ratings, Rating Counts & Qty Sold (by Processor Brand)</div>""",unsafe_allow_html = True)
-        ratings_processor_brand = final_dataset_products.groupby('Processor Brand').agg(avg_ratings = ('Ratings','mean'),Rating_counts = ('Ratings_counts','sum'),avg_qty_sold = ('Qty_sold_last_month_','sum'))
+        ratings_processor_brand = k.groupby('Processor Brand').agg(avg_ratings = ('Ratings','mean'),Rating_counts = ('Ratings_counts','sum'),avg_qty_sold = ('Qty_sold_last_month_','sum'))
         ratings_processor_brand = ratings_processor_brand.reset_index()
         def processor_brand_analysis(ratings_processor_brand):
             x = np.arange(len(ratings_processor_brand))
@@ -424,12 +435,12 @@ def all_analysis():
             axes[0].bar(x = x-width/2,height = ratings_processor_brand['avg_qty_sold'],width = width,label = 'Avg_Qty_Sold')
             
             for i,value in enumerate(ratings_processor_brand['avg_qty_sold']):
-                axes[0].text(i-width/2,value+0.5,value,ha = 'center')
+                axes[0].text(i-width/2,value+0.0005,value,ha = 'center')
             
             
             axes[0].bar(x = x+width/2 ,height = ratings_processor_brand['Rating_counts'],width = width,label = 'Rating_counts',alpha = 0.5)
             for i,value in enumerate(ratings_processor_brand['Rating_counts']):
-                axes[0].text(i+width/2,value+0.5,value,ha = 'center')
+                axes[0].text(i+width/2,value+0.0005,value,ha = 'center')
             axes[0].set_title('Avg_Qty_sold & Ratings_counts')
             axes[0].set_xticks(x)
             axes[0].set_xticklabels(ratings_processor_brand['Processor Brand'])
@@ -459,7 +470,7 @@ def all_analysis():
 
         st.markdown("""<div style = "font-weight:bold; font-size :21px ; text-align:center;"
                     >🔗📊 Relationship Between Ratings, Rating Counts & Qty Sold (by Laptop series)</div>""",unsafe_allow_html = True)
-        series_ratings = final_dataset_products.groupby('Series').agg(Avg_ratings = ('Ratings','mean'),Total_Ratings_count = ('Ratings_counts','sum'),Total_Qty_sold = ('Qty_sold_last_month_','sum')).sort_values(by = ['Total_Qty_sold','Total_Ratings_count','Avg_ratings'],ascending = False)
+        series_ratings = k.groupby('Series').agg(Avg_ratings = ('Ratings','mean'),Total_Ratings_count = ('Ratings_counts','sum'),Total_Qty_sold = ('Qty_sold_last_month_','sum')).sort_values(by = ['Total_Qty_sold','Total_Ratings_count','Avg_ratings'],ascending = False)
         series_ratings = series_ratings.reset_index()
         def Series_analysis(series_ratings):
             x = np.arange(len(series_ratings))
@@ -482,7 +493,7 @@ def all_analysis():
             axes[1].plot(x+width/2,series_ratings['Avg_ratings'],marker = 'x',label = 'Avg_ratings',color = 'r')
             for i,value in enumerate(series_ratings['Avg_ratings']):
                 if pd.notna(value):
-                    axes[1].text(i-width/2,value+0.05,round(value,2))
+                    axes[1].text(i-width/2,value+0.0005,round(value,2))
             axes[1].set_title('Average Ratings Based on Series')
             axes[1].legend()
             axes[1].set_xticks(x)
@@ -562,6 +573,4 @@ def all_analysis():
 
             
 if st.session_state.logged_in:
-
     all_analysis()
-
