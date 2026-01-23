@@ -23,7 +23,7 @@ if not st.session_state.logged_in:
 
 
 def all_analysis():
-    final_dataset_products = pd.read_csv(r'C:\Users\Harshita Sahu\OneDrive\Documents\Web_scrapping_data\finalized_data_csvv.csv')
+    final_dataset_products = pd.read_csv("data/finalized_data_csvv.csv")
     final_dataset_products = final_dataset_products.drop(columns = ['Unnamed: 0'])
     st.title("Product Data Analysis")
     
@@ -562,4 +562,5 @@ def all_analysis():
 
             
 if st.session_state.logged_in:
+
     all_analysis()
