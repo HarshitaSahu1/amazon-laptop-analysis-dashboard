@@ -20,10 +20,10 @@ if not st.session_state.logged_in:
             st.rerun()  # This refreshes the app to show dashboard
         else:
             st.error("Invalid username or password")
-  st.info("Demo Credentials
-  Username: admin
-  Password: 123
-  Note: This is a demo login created for portfolio evaluation.""")
+      st.info("Demo Credentials
+      Username: admin
+      Password: 123
+      Note: This is a demo login created for portfolio evaluation.""")
    
 
 
