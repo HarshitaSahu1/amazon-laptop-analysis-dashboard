@@ -20,7 +20,18 @@ if not st.session_state.logged_in:
             st.rerun()  # This refreshes the app to show dashboard
         else:
             st.error("Invalid username or password")
-    st.info("""Demo Credentials Username: admin, Password: 123  Note: This is a demo login created for portfolio evaluation.""")
+    st.markdown("""### 💻 Amazon Laptop Analytics & Recommendation System
+    This dashboard analyzes Amazon laptop data collected through web scraping and provides:
+    - Product Performance Analysis
+    - Pricing Insights
+    - Rating Analysis
+    - Sales Trends
+    - Laptop Recommendations
+    
+    **Demo Credentials**
+    - Username: admin
+    - Password: 123
+    """)
    
 
 
