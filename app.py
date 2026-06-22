@@ -501,7 +501,7 @@ def all_analysis():
             axes[1].set_xticklabels(series_ratings['Series'])
             axes[1].set_xlabel('Series')
             axes[1].tick_params('x',rotation = 90)
-            fig.subplots_adjust(hspace=0.5)
+            fig.subplots_adjust(hspace=0.8)
             return fig
         st.pyplot(Series_analysis(series_ratings))
 
