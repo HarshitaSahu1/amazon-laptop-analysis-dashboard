@@ -502,6 +502,8 @@ def all_analysis():
             axes[1].set_xlabel('Series')
             axes[1].tick_params('x',rotation = 90)
             fig.subplots_adjust(hspace=0.5)
+            fig.add_artist(
+            plt.Line2D([0.1, 0.9],[0.5, 0.5], transform=fig.transFigure,color='black',linewidth=2) )
             return fig
         st.pyplot(Series_analysis(series_ratings))
 
