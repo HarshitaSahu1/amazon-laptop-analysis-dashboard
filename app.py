@@ -476,8 +476,8 @@ def all_analysis():
         def Series_analysis(series_ratings):
             x = np.arange(len(series_ratings))
             width = 0.50
-            fig,axes = plt.subplots(1,2,figsize = (10,5))
-            axes = axes.flatten()
+            fig,axes = plt.subplots(2,1,figsize = (12,10))
+            #axes = axes.flatten()
             
             axes[0].bar(x-width/2,series_ratings['Total_Qty_sold'],width = width,label = 'Total_Qty_Sold')
             axes[0].set_xticks(x)
@@ -501,6 +501,7 @@ def all_analysis():
             axes[1].set_xticklabels(series_ratings['Series'])
             axes[1].set_xlabel('Series')
             axes[1].tick_params('x',rotation = 90)
+            fig.subplots_adjust(hspace=0.5)
             return fig
         st.pyplot(Series_analysis(series_ratings))
 
