@@ -453,7 +453,7 @@ def all_analysis():
                 axes[1].text(i,value+0.05,round(value,2))
             axes[1].set_xticks(x)
             axes[1].set_xticklabels(ratings_processor_brand['Processor Brand'])
-            axes[1].set_title('Average_Ratings')
+            axes[1].set_title('──────── Average Ratings Based on Series ────────',fontsize=12,pad=20)
             axes[1].set_xlabel('Processor Brand')
             axes[1].legend()
             return fig
