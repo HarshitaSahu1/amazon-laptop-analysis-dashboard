@@ -495,7 +495,7 @@ def all_analysis():
             for i,value in enumerate(series_ratings['Avg_ratings']):
                 if pd.notna(value):
                     axes[1].text(i-width/2,value+0.0005,round(value,2))
-            axes[1].set_title('──────── Average Ratings Based on Series ────────',fontsize=12,pad=20)
+            axes[1].set_title('Average Ratings Based on Series')
             axes[1].legend()
             axes[1].set_xticks(x)
             axes[1].set_xticklabels(series_ratings['Series'])
