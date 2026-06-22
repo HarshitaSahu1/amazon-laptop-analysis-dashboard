@@ -453,7 +453,7 @@ def all_analysis():
                 axes[1].text(i,value+0.05,round(value,2))
             axes[1].set_xticks(x)
             axes[1].set_xticklabels(ratings_processor_brand['Processor Brand'])
-            axes[1].set_title('──────── Average Ratings Based on Series ────────',fontsize=12,pad=20)
+            axes[1].set_title('Average Ratings Based on Processor Brand')
             axes[1].set_xlabel('Processor Brand')
             axes[1].legend()
             return fig
@@ -495,13 +495,13 @@ def all_analysis():
             for i,value in enumerate(series_ratings['Avg_ratings']):
                 if pd.notna(value):
                     axes[1].text(i-width/2,value+0.0005,round(value,2))
-            axes[1].set_title('Average Ratings Based on Series')
+            axes[1].set_title('──────── Average Ratings Based on Series ────────',fontsize=12,pad=20)
             axes[1].legend()
             axes[1].set_xticks(x)
             axes[1].set_xticklabels(series_ratings['Series'])
             axes[1].set_xlabel('Series')
             axes[1].tick_params('x',rotation = 90)
-            fig.subplots_adjust(hspace=0.8)
+            fig.subplots_adjust(hspace=0.10)
             return fig
         st.pyplot(Series_analysis(series_ratings))
 
