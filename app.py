@@ -38,7 +38,7 @@ def all_analysis():
     
     #final_dataset_products = pd.read_csv(r'C:\Users\Harshita Sahu\OneDrive\Documents\Web_scrapping_data\finalized_data_csvv.csv')
     final_dataset_products = final_dataset_products.drop(columns = ['Unnamed: 0'])
-    st.title("Product Data Analysis")
+    st.title("Amazon Laptop Recommendation & Market Analysis Dashboard")
     
     Titles = final_dataset_products['Titles'].unique()
     Series = final_dataset_products['Series'].unique()
