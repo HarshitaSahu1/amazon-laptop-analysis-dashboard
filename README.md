@@ -167,25 +167,23 @@ This creates a quick product intelligence tool for individual laptop analysis.
 * Results should be interpreted as indicative market insights rather than definitive conclusions.
 
 ---
+## 🌐 Live Dashboard
 
-## 📷 Dashboard Preview
+Explore the interactive Streamlit dashboard here:
 
-Add dashboard screenshots here.
+🔗 [Amazon Laptop Recommendation Dashboard](https://amazon-laptop-analysis-dashboard-tuorxz2bwdrriv6twrwywn.streamlit.app/)
 
-### Home Dashboard
+The dashboard contains five interactive modules:
 
-![Dashboard Screenshot](screenshots/dashboard_home.png)
+1. Data Overview & Analysis
+2. Comparative Analysis
+3. Ratings Analysis
+4. URL-Based Product Analysis
+5. Business Insights & Wrap-Up
 
-### Comparative Analysis
+Users can explore KPIs, visualizations, laptop comparisons, processor-based analysis, and product-specific insights through an interactive interface.
 
-![Comparison Screenshot](screenshots/comparison.png)
-
-### Ratings Analysis
-
-![Ratings Analysis Screenshot](screenshots/ratings.png)
-
----
-
+----
 ## 💡 Future Improvements
 
 * Larger product dataset
